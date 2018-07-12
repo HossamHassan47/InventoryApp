@@ -3,4 +3,11 @@
     <string name="action_settings">Settings</string>
     <string name="insert_dummy_data">Insert Dummy Data</string>
     <string name="delete_all_products">Delete All Products</string>
+
+
+    <!-- Toast message in editor when new pet has been successfully inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_successful">Product saved</string>
+
+    <!-- Toast message in editor when new pet has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_failed">Error with saving product</string>
 </resources>

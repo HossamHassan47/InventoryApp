@@ -3,6 +3,7 @@ package com.wordpress.hossamhassan47.inventoryapp.activities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -74,14 +75,8 @@ public class MainActivity extends AppCompatActivity {
                 InventoryContract.ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER};
 
         // Perform a query on the products table
-        Cursor cursor = db.query(
-                InventoryContract.ProductEntry.TABLE_NAME,  // The table to query
-                projection,                                 // The columns to return
-                null,                              // The columns for the WHERE clause
-                null,                           // The values for the WHERE clause
-                null,                              // Don't group the rows
-                null,                               // Don't filter by row groups
-                null);                             // The sort order
+        Cursor cursor = getContentResolver().query(InventoryContract.ProductEntry.CONTENT_URI,
+                projection, null, null, null);
 
         TextView displayView = (TextView) findViewById(R.id.text_view_products);
 
@@ -138,9 +133,6 @@ public class MainActivity extends AppCompatActivity {
      * Helper method to insert hardcoded product data into the database. For debugging purposes only.
      */
     private void insertProduct() {
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // Create a ContentValues object
         ContentValues values = new ContentValues();
         values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, "Test Product");
@@ -149,10 +141,22 @@ public class MainActivity extends AppCompatActivity {
         values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_NAME, "Test Supplier");
         values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "+2012345678910");
 
-        // Insert a new row & returning the ID.
-        long newRowId = db.insert(InventoryContract.ProductEntry.TABLE_NAME, null, values);
+        //Cursor cursor = getContentResolver().query(InventoryContract.ProductEntry.CONTENT_URI,
+        //        projection, null, null, null);
 
-        Toast.makeText(getApplicationContext(), "Record added with ID:" + newRowId, Toast.LENGTH_SHORT).show();
+        // Insert a new row & returning the ID.
+        Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
+
+        // Show a toast message depending on whether or not the insertion was successful
+        if (newUri == null) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, getString(R.string.editor_insert_product_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, getString(R.string.editor_insert_product_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
