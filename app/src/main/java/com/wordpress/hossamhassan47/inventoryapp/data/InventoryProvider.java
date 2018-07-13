@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.wordpress.hossamhassan47.inventoryapp.R;
+
 public class InventoryProvider extends ContentProvider {
 
     /**
@@ -87,7 +89,7 @@ public class InventoryProvider extends ContentProvider {
                         null, null, sortOrder);
                 break;
             default:
-                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.cannot_query_for) + uri);
         }
 
         return cursor;
@@ -99,7 +101,15 @@ public class InventoryProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCTS:
+                return InventoryContract.ProductEntry.CONTENT_LIST_TYPE;
+            case PRODUCT_ID:
+                return InventoryContract.ProductEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 
     /**
@@ -113,7 +123,7 @@ public class InventoryProvider extends ContentProvider {
             case PRODUCTS:
                 return insertProduct(uri, values);
             default:
-                throw new IllegalArgumentException("Insertion is not supported for " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.insert_not_supported_for) + uri);
         }
     }
 
@@ -125,19 +135,19 @@ public class InventoryProvider extends ContentProvider {
         // Check the name is not null
         String name = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
         if (name == null) {
-            throw new IllegalArgumentException("Product requires a name");
+            throw new IllegalArgumentException(getContext().getString(R.string.product_valid_name));
         }
 
         // If the price is provided, check that it's greater than or equal to 0
         Integer price = values.getAsInteger(InventoryContract.ProductEntry.COLUMN_PRICE);
         if (price == null || price < 0) {
-            throw new IllegalArgumentException("Product requires valid price");
+            throw new IllegalArgumentException(getContext().getString(R.string.product_valid_price));
         }
 
         // If the quantity is provided, check that it's greater than or equal to 0
         Integer quantity = values.getAsInteger(InventoryContract.ProductEntry.COLUMN_QUANTITY);
         if (quantity == null || quantity < 0) {
-            throw new IllegalArgumentException("Product requires valid quantity");
+            throw new IllegalArgumentException(getContext().getString(R.string.product_valid_quantity));
         }
 
         // Gets the database in write mode
@@ -148,7 +158,7 @@ public class InventoryProvider extends ContentProvider {
 
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            Log.e(LOG_TAG, getContext().getString(R.string.failed_to_insert_for) + uri);
             return null;
         }
 
@@ -162,7 +172,22 @@ public class InventoryProvider extends ContentProvider {
      */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        // Get writeable database
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCTS:
+                // Delete all rows that match the selection and selection args
+                return database.delete(InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+            case PRODUCT_ID:
+                // Delete a single row given by the ID in the URI
+                selection = InventoryContract.ProductEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return database.delete(InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException(getContext().getString(R.string.delete_not_supported_for) + uri);
+        }
     }
 
     /**
@@ -183,7 +208,7 @@ public class InventoryProvider extends ContentProvider {
 
                 return updateProduct(uri, values, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Update is not supported for " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.update_not_supported_for) + uri);
         }
     }
 
@@ -203,7 +228,7 @@ public class InventoryProvider extends ContentProvider {
         if (values.containsKey(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME)) {
             String name = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
             if (name == null) {
-                throw new IllegalArgumentException("Product requires a name");
+                throw new IllegalArgumentException(getContext().getString(R.string.product_valid_name));
             }
         }
 
@@ -213,7 +238,7 @@ public class InventoryProvider extends ContentProvider {
             // Check that the price is greater than or equal to 0 kg
             Integer price = values.getAsInteger(InventoryContract.ProductEntry.COLUMN_PRICE);
             if (price == null || price < 0) {
-                throw new IllegalArgumentException("Product requires valid price");
+                throw new IllegalArgumentException(getContext().getString(R.string.product_valid_price));
             }
         }
 
@@ -223,7 +248,7 @@ public class InventoryProvider extends ContentProvider {
             // Check that the quantity is greater than or equal to 0 kg
             Integer quantity = values.getAsInteger(InventoryContract.ProductEntry.COLUMN_QUANTITY);
             if (quantity == null || quantity < 0) {
-                throw new IllegalArgumentException("Product requires valid quantity");
+                throw new IllegalArgumentException(getContext().getString(R.string.product_valid_quantity));
             }
         }
 

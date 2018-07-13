@@ -10,4 +10,12 @@
 
     <!-- Toast message in editor when new pet has failed to be inserted [CHAR LIMIT=NONE] -->
     <string name="editor_insert_product_failed">Error with saving product</string>
+    <string name="product_valid_quantity">Product requires valid quantity</string>
+    <string name="product_valid_price">Product requires valid price</string>
+    <string name="product_valid_name">Product requires a name</string>
+    <string name="update_not_supported_for">Update is not supported for</string>
+    <string name="failed_to_insert_for">Failed to insert row for</string>
+    <string name="cannot_query_for">Cannot query unknown URI</string>
+    <string name="insert_not_supported_for">Insertion is not supported for</string>
+    <string name="delete_not_supported_for">Deletion is not supported for</string>
 </resources>
