@@ -74,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
         // Find the ListView which will be populated with the pet data
         ListView lstvwInventory = (ListView) findViewById(R.id.list_view_inventory);
 
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        lstvwInventory.setEmptyView(emptyView);
+
         // Setup an Adapter to create a list item for each row of pet data in the Cursor.
         InventoryCursorAdapter adapter = new InventoryCursorAdapter(this, cursor);
 

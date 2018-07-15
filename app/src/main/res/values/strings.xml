@@ -18,4 +18,10 @@
     <string name="cannot_query_for">Cannot query unknown URI</string>
     <string name="insert_not_supported_for">Insertion is not supported for</string>
     <string name="delete_not_supported_for">Deletion is not supported for</string>
+
+    <!-- Title text for the empty view, which describes the empty inventory image [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">Your inventory is empty...</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Get started by adding a product</string>
 </resources>
