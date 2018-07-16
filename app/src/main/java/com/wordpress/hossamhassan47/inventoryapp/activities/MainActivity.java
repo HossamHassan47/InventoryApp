@@ -1,6 +1,9 @@
 package com.wordpress.hossamhassan47.inventoryapp.activities;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -21,12 +24,13 @@ import com.wordpress.hossamhassan47.inventoryapp.adapters.InventoryCursorAdapter
 import com.wordpress.hossamhassan47.inventoryapp.data.InventoryContract;
 import com.wordpress.hossamhassan47.inventoryapp.data.InventoryDbHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    /**
-     * Database helper that will provide us access to the database
-     */
-    private InventoryDbHelper mDbHelper;
+    private static final int INVENTORY_LOADER = 0;
+
+    InventoryCursorAdapter mCursorAdapter;
+    ListView lstvwInventory;
+    View emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,44 +49,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Instantiate our inventory db helper
-        mDbHelper = new InventoryDbHelper(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        displayProductList();
-    }
-
-    /**
-     * Display all inventory product list
-     */
-    private void displayProductList() {
-        // Define projection for Id, Name, Price, and Quantity
-        String[] projection = {
-                InventoryContract.ProductEntry._ID,
-                InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME,
-                InventoryContract.ProductEntry.COLUMN_PRICE,
-                InventoryContract.ProductEntry.COLUMN_QUANTITY};
-
-        // Perform a query on the products table
-        Cursor cursor = getContentResolver().query(InventoryContract.ProductEntry.CONTENT_URI,
-                projection, null, null, null);
-
         // Find the ListView which will be populated with the pet data
-        ListView lstvwInventory = (ListView) findViewById(R.id.list_view_inventory);
+        lstvwInventory = (ListView) findViewById(R.id.list_view_inventory);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-        View emptyView = findViewById(R.id.empty_view);
+        emptyView = findViewById(R.id.empty_view);
         lstvwInventory.setEmptyView(emptyView);
 
-        // Setup an Adapter to create a list item for each row of pet data in the Cursor.
-        InventoryCursorAdapter adapter = new InventoryCursorAdapter(this, cursor);
-
         // Attach the adapter to the ListView.
-        lstvwInventory.setAdapter(adapter);
+        mCursorAdapter  = new InventoryCursorAdapter(this, null);
+        lstvwInventory.setAdapter(mCursorAdapter);
+
+        // Kick off the loader
+        getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
 
     /**
@@ -134,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_insert_dummy_data) {
             insertProduct();
-            displayProductList();
             return true;
         } else if (id == R.id.action_delete_all_products) {
             // Do nothing for now
@@ -142,5 +120,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // Define projection for Id, Name, Price, and Quantity
+        String[] projection = {
+                InventoryContract.ProductEntry._ID,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME,
+                InventoryContract.ProductEntry.COLUMN_PRICE,
+                InventoryContract.ProductEntry.COLUMN_QUANTITY};
+
+        return new CursorLoader(this,
+                InventoryContract.ProductEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
     }
 }

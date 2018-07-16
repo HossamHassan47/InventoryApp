@@ -22,7 +22,11 @@
         <provider
             android:name=".data.InventoryProvider"
             android:authorities="com.wordpress.hossamhassan47.inventoryapp"
-            android:exported="false" />
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:label="InventoryItemsProvider"
+            android:readPermission="com.wordpress.hossamhassan47.inventoryapp.READ"
+            android:writePermission="com.wordpress.hossamhassan47.inventoryapp.WRITE" />
     </application>
 
 </manifest>
