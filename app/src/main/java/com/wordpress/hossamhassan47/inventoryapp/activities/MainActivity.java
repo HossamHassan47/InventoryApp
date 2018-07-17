@@ -1,13 +1,16 @@
 package com.wordpress.hossamhassan47.inventoryapp.activities;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,9 +47,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Open product editor
-                Snackbar.make(view, "TODO: Open product editor", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -59,6 +62,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Attach the adapter to the ListView.
         mCursorAdapter  = new InventoryCursorAdapter(this, null);
         lstvwInventory.setAdapter(mCursorAdapter);
+
+        lstvwInventory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+
+                Uri currentProductUri = ContentUris.withAppendedId(InventoryContract.ProductEntry.CONTENT_URI, id);
+
+                intent.setData(currentProductUri);
+
+                startActivity(intent);
+            }
+        });
 
         // Kick off the loader
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);

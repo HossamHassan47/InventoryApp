@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name=".data.InventoryProvider"
             android:authorities="com.wordpress.hossamhassan47.inventoryapp"
@@ -27,6 +28,15 @@
             android:label="InventoryItemsProvider"
             android:readPermission="com.wordpress.hossamhassan47.inventoryapp.READ"
             android:writePermission="com.wordpress.hossamhassan47.inventoryapp.WRITE" />
+
+        <activity
+            android:name=".activities.EditorActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.wordpress.hossamhassan47.inventoryapp.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
