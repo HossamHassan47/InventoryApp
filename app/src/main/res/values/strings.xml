@@ -8,10 +8,12 @@
     <!-- Toast message in editor when new pet has been successfully inserted [CHAR LIMIT=NONE] -->
     <string name="editor_save_product_successful">Product saved successfully</string>
     <string name="editor_delete_product_successful">Product deleted successfully</string>
+    <string name="sale_product_successful">Sale Done</string>
 
     <!-- Toast message in editor when new pet has failed to be inserted [CHAR LIMIT=NONE] -->
     <string name="editor_save_product_failed">Error with saving product</string>
     <string name="editor_delete_product_failed">Error with deleting product</string>
+    <string name="sale_product_failed">Error with Product Sale</string>
 
     <string name="product_valid_quantity">Product requires valid quantity</string>
     <string name="product_valid_price">Product requires valid price</string>
@@ -59,4 +61,7 @@
 
     <!-- Dialog button text for the option to keep editing the current pet [CHAR LIMIT=20] -->
     <string name="keep_editing">Keep Editing</string>
+    <string name="list_item_price">Price:</string>
+    <string name="list_item_quantity">Quantity:</string>
+    <string name="list_item_currency">$</string>
 </resources>

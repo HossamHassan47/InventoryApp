@@ -13,19 +13,41 @@
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@color/colorPrimaryDark" />
 
-    <TextView
-        android:id="@+id/text_view_price"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@color/colorPrimary" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/text_view_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@color/colorPrimary" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_view_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/text_view_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_view_sale"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_sale"/>
+    </LinearLayout>
+
 </LinearLayout>
