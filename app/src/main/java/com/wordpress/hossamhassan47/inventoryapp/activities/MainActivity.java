@@ -80,36 +80,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
 
-    /**
-     * Helper method to insert hardcoded product data into the database. For debugging purposes only.
-     */
-    private void insertProduct() {
-        // Create a ContentValues object
-        ContentValues values = new ContentValues();
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, "Test Product");
-        values.put(InventoryContract.ProductEntry.COLUMN_PRICE, 2);
-        values.put(InventoryContract.ProductEntry.COLUMN_QUANTITY, 7);
-        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_NAME, "Test Supplier");
-        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "+2012345678910");
-
-        //Cursor cursor = getContentResolver().query(InventoryContract.ProductEntry.CONTENT_URI,
-        //        projection, null, null, null);
-
-        // Insert a new row & returning the ID.
-        Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
-
-        // Show a toast message depending on whether or not the insertion was successful
-        if (newUri == null) {
-            // If the new content URI is null, then there was an error with insertion.
-            Toast.makeText(this, getString(R.string.editor_insert_product_failed),
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            // Otherwise, the insertion was successful and we can display a toast.
-            Toast.makeText(this, getString(R.string.editor_insert_product_successful),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -126,12 +96,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_insert_dummy_data) {
-            insertProduct();
-            return true;
-        } else if (id == R.id.action_delete_all_products) {
-            // Do nothing for now
             return true;
         }
 

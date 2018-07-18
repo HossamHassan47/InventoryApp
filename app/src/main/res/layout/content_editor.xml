@@ -1,11 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.EditorActivity"
     tools:showIn="@layout/activity_editor">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_margin">
+
+        <!--Product Name-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/product_name" />
+
+        <EditText
+            android:id="@+id/edit_text_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_product_name"
+            android:inputType="textCapWords" />
+
+        <!--Price-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/price" />
+
+        <EditText
+            android:id="@+id/edit_text_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:hint="@string/hint_product_price"
+            android:inputType="number" />
+
+        <!--Quantity-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/quantity" />
+
+        <EditText
+            android:id="@+id/edit_text_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:hint="@string/hint_product_quantity"
+            android:inputType="number" />
+
+        <!--Supplier Name-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/supplier_name" />
+
+        <EditText
+            android:id="@+id/edit_text_supplier_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_supplier_name"
+            android:inputType="textPersonName" />
+
+        <!--Supplier Phone-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/supplier_phone" />
+
+        <EditText
+            android:id="@+id/edit_text_supplier_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789+"
+            android:hint="@string/hint_supplier_phone"
+            android:inputType="phone" />
+
+    </LinearLayout>
+</ScrollView>
