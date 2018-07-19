@@ -3,5 +3,6 @@
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="padding_16">16dp</dimen>
     <dimen name="padding_8">8dp</dimen>
+    <dimen name="list_item_height">100dp</dimen>
 
 </resources>

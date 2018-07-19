@@ -3,6 +3,7 @@ package com.wordpress.hossamhassan47.inventoryapp.adapters;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.inventoryapp.R;
+import com.wordpress.hossamhassan47.inventoryapp.activities.EditorActivity;
+import com.wordpress.hossamhassan47.inventoryapp.activities.MainActivity;
 import com.wordpress.hossamhassan47.inventoryapp.data.InventoryContract;
 
 public class InventoryCursorAdapter extends CursorAdapter {
@@ -34,6 +37,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         TextView txtPrice = (TextView) view.findViewById(R.id.text_view_price);
         TextView txtQuantity = (TextView) view.findViewById(R.id.text_view_quantity);
         ImageView btnSale = (ImageView) view.findViewById(R.id.image_view_sale);
+        ImageView btnEdit = (ImageView) view.findViewById(R.id.image_view_edit);
 
         // Get indexes
         int indexId = cursor.getColumnIndex(InventoryContract.ProductEntry._ID);
@@ -51,6 +55,12 @@ public class InventoryCursorAdapter extends CursorAdapter {
         txtProductName.setText(productName);
         txtPrice.setText(context.getString(R.string.list_item_price) + " " + context.getString(R.string.list_item_currency) + price);
         txtQuantity.setText(context.getString(R.string.list_item_quantity) + " " + quantity);
+
+        if (quantity > 0) {
+            btnSale.setImageResource(R.drawable.ic_sale);
+        } else {
+            btnSale.setImageResource(R.drawable.ic_sale_gray);
+        }
 
         btnSale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +87,19 @@ public class InventoryCursorAdapter extends CursorAdapter {
                     Toast.makeText(context, context.getString(R.string.sale_product_successful),
                             Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EditorActivity.class);
+
+                Uri currentProductUri = ContentUris.withAppendedId(InventoryContract.ProductEntry.CONTENT_URI, id);
+
+                intent.setData(currentProductUri);
+
+                context.startActivity(intent);
             }
         });
     }
