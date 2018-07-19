@@ -10,21 +10,19 @@
         android:background="@color/color_title_background"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
         <ImageView
             android:id="@+id/image_view_sale"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:layout_gravity="center"
-            android:layout_marginRight="4dp"
+            android:layout_marginLeft="@dimen/activity_margin"
             android:background="?android:attr/selectableItemBackground"
             android:padding="4dp"
             android:src="@drawable/ic_sale" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/image_view_edit"
