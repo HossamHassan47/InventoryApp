@@ -8,8 +8,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +23,10 @@ import android.widget.Toast;
 import com.wordpress.hossamhassan47.inventoryapp.R;
 import com.wordpress.hossamhassan47.inventoryapp.data.InventoryContract;
 
+/**
+ * Editor Activity
+ * Activity that used to add or edit product
+ */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     //region Variables and Members
@@ -48,7 +50,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_editor);
 
         // Set action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Set back navigation button
@@ -143,8 +145,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             // Update the views on the screen with the values from the database
             mEditTextProductName.setText(productName);
-            mEditTextPrice.setText(Integer.toString(price));
-            mEditTextQuantity.setText(Integer.toString(quantity));
+            mEditTextPrice.setText(String.format("%s", Integer.toString(price)));
+            mEditTextQuantity.setText(String.format("%s", Integer.toString(quantity)));
             mEditTextSupplierName.setText(supplierName);
             mEditTextSupplierPhoneNumber.setText(supplierPhone);
         }
@@ -182,9 +184,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_product) {
             saveProduct();
-
-            // Exit activity
-            finish();
             return true;
         } else if (id == R.id.action_delete_product) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -304,30 +303,29 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_NAME, supplierName);
         values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhone);
 
+        boolean result;
         if (mCurrentProductUri == null) {
             // Insert a new row & returning the ID.
             Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
 
-            // Show a toast message depending on whether or not the insertion was successful
-            if (newUri == null) {
-                Toast.makeText(this, getString(R.string.editor_save_product_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, getString(R.string.editor_save_product_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
+            result = newUri != null;
         } else {
             // Edit Mode
             int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
 
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                Toast.makeText(this, getString(R.string.editor_save_product_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, getString(R.string.editor_save_product_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
+            result = rowsAffected > 0;
+        }
+
+        // Show a toast message depending on whether or not the update was successful.
+        if (result) {
+            Toast.makeText(this, getString(R.string.editor_save_product_successful),
+                    Toast.LENGTH_SHORT).show();
+
+            // Exit activity
+            finish();
+        } else {
+            Toast.makeText(this, getString(R.string.editor_save_product_failed),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -2,7 +2,6 @@ package com.wordpress.hossamhassan47.inventoryapp.activities;
 
 import android.Manifest;
 import android.app.LoaderManager;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -12,19 +11,15 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +27,10 @@ import android.widget.Toast;
 import com.wordpress.hossamhassan47.inventoryapp.R;
 import com.wordpress.hossamhassan47.inventoryapp.data.InventoryContract;
 
+/**
+ * Details Activity
+ * Activity that display product details
+ */
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     //region Variables and Members
@@ -47,18 +46,15 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private TextView mTextViewSupplierName;
     private TextView mTextViewSupplierPhoneNumber;
 
-    private ImageView btnDecreaseQuantity;
-    private ImageView btnIncreaseQuantity;
-    private ImageView btnOrder;
-
     private int quantity;
     //endregion
 
+    //region On Create
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
 
@@ -77,7 +73,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mTextViewSupplierName = findViewById(R.id.text_view_supplier_name);
         mTextViewSupplierPhoneNumber = findViewById(R.id.text_view_supplier_phone);
 
-        btnDecreaseQuantity = findViewById(R.id.image_view_decrease_quantity);
+        ImageView btnDecreaseQuantity = findViewById(R.id.image_view_decrease_quantity);
         btnDecreaseQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +86,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        btnIncreaseQuantity = findViewById(R.id.image_view_increase_quantity);
+        ImageView btnIncreaseQuantity = findViewById(R.id.image_view_increase_quantity);
         btnIncreaseQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +95,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        btnOrder = findViewById(R.id.image_view_order);
+        ImageView btnOrder = findViewById(R.id.image_view_order);
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,27 +122,27 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the phone call
+
+                    // Permission was granted
                     Toast.makeText(getApplicationContext(),
-                            "Access granted, try again now please.",
+                            R.string.access_granted,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                     Toast.makeText(getApplicationContext(),
-                            "Oops, Access denied.",
+                            R.string.access_denied,
                             Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
         }
     }
+    //endregion
 
     //region Cursor Loader
     @Override
@@ -194,8 +190,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
             // Update the views on the screen with the values from the database
             mTextViewProductName.setText(productName);
-            mTextViewPrice.setText(getString(R.string.list_item_currency) + Integer.toString(price));
-            mTextViewQuantity.setText(Integer.toString(quantity));
+            mTextViewPrice.setText(String.format("%s%s", getString(R.string.list_item_currency), Integer.toString(price)));
+            mTextViewQuantity.setText(String.format("%s", Integer.toString(quantity)));
             mTextViewSupplierName.setText(supplierName);
             mTextViewSupplierPhoneNumber.setText(supplierPhone);
         }

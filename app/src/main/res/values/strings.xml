@@ -25,7 +25,7 @@
     <string name="delete_not_supported_for">Deletion is not supported for</string>
 
     <!-- Title text for the empty view, which describes the empty inventory image [CHAR LIMIT=50] -->
-    <string name="empty_view_title_text">Your inventory is empty...</string>
+    <string name="empty_view_title_text">Your inventory is empty…</string>
 
     <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=50] -->
     <string name="empty_view_subtitle_text">Get started by adding a product</string>
@@ -66,4 +66,9 @@
     <string name="list_item_currency">$</string>
 
     <string name="title_activity_details">Product Details</string>
+    <string name="decrease_quantity">Decrease Quantity</string>
+    <string name="increase_quantity">Increase Quantity</string>
+    <string name="order_product">Order Product</string>
+    <string name="access_granted">Access granted, try again now please.</string>
+    <string name="access_denied">Oops, Access denied.</string>
 </resources>
